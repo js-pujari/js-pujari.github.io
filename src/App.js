@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import React, { useEffect, useRef, useState } from 'react'
 import './App.css';
-
+import initializeDapi from './init';
 function App() {
+  const [dapi, setDapi] = useState({});
+  const [er, setER] = useState(false);
+  const scb = (v) => {
+    console.log(v);
+  }
+  const onReadyCb = (v) => {
+    setER(true)
+  }
+  useEffect(() => {
+    if (window.Dapi) {
+      const dapiObj = initializeDapi({ scb, onReadyCb });
+      setDapi(dapiObj);
+    }
+  }, []);
+  useEffect(() => {
+    if (er) {
+      dapi.open()
+    }
+  }, [dapi, er]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
     </div>
   );
 }
